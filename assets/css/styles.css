@@ -1759,6 +1759,20 @@ html.lenis { height: auto; }
 .svc-visual-stats { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); padding-top: var(--space-6); border-top: 1px solid rgba(255,255,255,0.15); }
 .svc-visual-stats div h5 { font-family: var(--font-heading); font-size: var(--text-2xl); font-weight: 800; color: var(--color-accent); margin-bottom: 4px; }
 .svc-visual-stats div p { font-size: var(--text-xs); color: rgba(255,255,255,0.7); margin: 0; }
+
+/* Fotos de cada servicio (las mismas del inicio) como fondo del panel, con velo navy para legibilidad */
+#comercializadora .svc-visual,
+#contable .svc-visual,
+#mentoria-personal .svc-visual,
+#mentoria-empresarial .svc-visual,
+#derecho .svc-visual,
+#estructuracion .svc-visual { background-repeat: no-repeat; background-position: center; background-size: cover; }
+#comercializadora .svc-visual   { background-image: linear-gradient(150deg, rgba(10,22,41,0.86), rgba(20,38,64,0.74)), url('../images/photos/photo-03.png'); }
+#contable .svc-visual           { background-image: linear-gradient(150deg, rgba(10,22,41,0.86), rgba(20,38,64,0.74)), url('../images/photos/photo-04.png'); }
+#mentoria-personal .svc-visual  { background-image: linear-gradient(150deg, rgba(10,22,41,0.86), rgba(20,38,64,0.74)), url('../images/photos/photo-05.png'); }
+#mentoria-empresarial .svc-visual { background-image: linear-gradient(150deg, rgba(10,22,41,0.86), rgba(20,38,64,0.74)), url('../images/photos/photo-06.png'); }
+#derecho .svc-visual            { background-image: linear-gradient(150deg, rgba(10,22,41,0.86), rgba(20,38,64,0.74)), url('../images/photos/photo-09.png'); }
+#estructuracion .svc-visual     { background-image: linear-gradient(150deg, rgba(10,22,41,0.86), rgba(20,38,64,0.74)), url('../images/photos/photo-10.png'); }
 .svc-stage.svc-alt { background: var(--color-bg-alt); }
 
 /* ----- PROCESS TIMELINE ----- */
@@ -1785,33 +1799,57 @@ html.lenis { height: auto; }
 }
 .page-loader-inner {
   display: flex; flex-direction: column;
-  align-items: center; gap: var(--space-7);
+  align-items: center; gap: var(--space-4);
 }
-/* El logo se muestra íntegro, flotando libre sobre el fondo — sin contenedor ni gradiente */
+/* Logo completo (isotipo + PUNTO SERVICIOS), recortado a su banda para evitar el relleno transparente del PNG */
 .page-loader-logo {
-  width: clamp(96px, 18vw, 150px);
-  height: auto; display: block;
-  animation: loaderPulse 1.6s ease-in-out infinite;
+  width: clamp(230px, 46vw, 350px);
+  aspect-ratio: 100 / 34;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  animation: loaderFade 1.8s ease-in-out infinite;
 }
+/* Slogan bajo el logo */
+.page-loader-tagline {
+  font-family: var(--font-heading);
+  font-size: clamp(0.7rem, 2.4vw, 0.92rem);
+  font-weight: 600;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: #fff;
+  margin-top: -0.25rem;
+}
+/* Línea amarilla animada: se dibuja de izquierda a derecha y vuelve */
 .page-loader-bar {
-  width: 140px; height: 3px;
+  width: clamp(160px, 34vw, 230px);
+  height: 3px;
   border-radius: var(--radius-full);
-  background: rgba(255,255,255,0.16);
+  background: rgba(255,255,255,0.14);
   overflow: hidden;
+  margin-top: var(--space-1);
 }
 .page-loader-bar span {
-  display: block; height: 100%; width: 40%;
+  display: block; height: 100%; width: 100%;
   border-radius: var(--radius-full);
   background: var(--color-accent);
-  animation: loaderBar 1.1s ease-in-out infinite;
+  transform: scaleX(0);
+  transform-origin: left center;
+  animation: loaderLine 1.5s ease-in-out infinite;
 }
 /* Estados controlados por JS */
 body.loaded .page-loader { opacity: 0; visibility: hidden; pointer-events: none; }
 body.page-leaving .page-loader { opacity: 1; visibility: visible; pointer-events: all; }
-@keyframes loaderPulse { 0%,100% { opacity: 0.6; transform: scale(0.97); } 50% { opacity: 1; transform: scale(1); } }
-@keyframes loaderBar { 0% { transform: translateX(-130%); } 100% { transform: translateX(360%); } }
+@keyframes loaderFade { 0%,100% { opacity: 0.85; } 50% { opacity: 1; } }
+@keyframes loaderLine {
+  0%   { transform: scaleX(0); transform-origin: left center; }
+  45%  { transform: scaleX(1); transform-origin: left center; }
+  55%  { transform: scaleX(1); transform-origin: right center; }
+  100% { transform: scaleX(0); transform-origin: right center; }
+}
 @media (prefers-reduced-motion: reduce) {
-  .page-loader-logo, .page-loader-bar span { animation: none; }
+  .page-loader-logo { animation: none; }
+  .page-loader-bar span { animation: none; transform: scaleX(1); }
   .page-loader { transition: none; }
 }
 
@@ -2133,6 +2171,38 @@ body.page-leaving .page-loader { opacity: 1; visibility: visible; pointer-events
   .section-team .team-grid { grid-template-columns: repeat(3, 1fr); align-items: start; }
   .section-team .team-grid > :nth-child(1) { margin-top: var(--space-10); }
   .section-team .team-grid > :nth-child(3) { margin-top: var(--space-10); }
+}
+
+/* ----- BANNER DE MARCA EN EL PIE DE PÁGINA (logo + slogan + línea amarilla animada) ----- */
+.brand-banner {
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center;
+  padding: clamp(2.5rem, 6vw, 4.25rem) var(--space-6) clamp(1.5rem, 3vw, 2.5rem);
+  margin-top: var(--space-8);
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+.brand-banner-logo {
+  width: clamp(220px, 42vw, 330px);
+  aspect-ratio: 100 / 34;
+  object-fit: cover; object-position: center;
+  display: block;
+}
+.brand-banner-tagline {
+  font-family: var(--font-heading);
+  font-size: clamp(0.7rem, 2.2vw, 0.9rem);
+  font-weight: 600; letter-spacing: 0.34em; text-transform: uppercase;
+  color: #fff; margin-top: -0.25rem;
+}
+.brand-banner-line {
+  width: clamp(180px, 36vw, 260px); height: 3px; border-radius: 2px;
+  background: var(--color-accent);
+  transform: scaleX(0); transform-origin: left center;
+  transition: transform 1s var(--ease-out) 0.15s;
+  margin-top: var(--space-2);
+}
+.brand-banner-line.drawn { transform: scaleX(1); }
+@media (prefers-reduced-motion: reduce) {
+  .brand-banner-line { transform: scaleX(1); transition: none; }
 }
 
 .gsap-init { visibility: hidden; }

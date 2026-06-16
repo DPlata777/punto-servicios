@@ -118,6 +118,22 @@
     document.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
   }
 
+  /* ---------- BANNER DE MARCA: línea amarilla que se dibuja al entrar en pantalla ---------- */
+  (function () {
+    var lines = document.querySelectorAll('.brand-banner-line');
+    if (!lines.length) return;
+    if ('IntersectionObserver' in window) {
+      var lineIO = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { e.target.classList.add('drawn'); lineIO.unobserve(e.target); }
+        });
+      }, { threshold: 0.4 });
+      lines.forEach(function (l) { lineIO.observe(l); });
+    } else {
+      lines.forEach(function (l) { l.classList.add('drawn'); });
+    }
+  })();
+
   /* ---------- COUNTERS (only if GSAP not loaded) ---------- */
   const hasGsap = typeof gsap !== 'undefined';
   const counters = document.querySelectorAll('[data-counter]');
