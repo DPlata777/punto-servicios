@@ -1728,7 +1728,12 @@ html.lenis { height: auto; }
 .svc-stage { position: relative; padding-block: clamp(6rem,12vw,10rem); border-top: 1px solid var(--color-border); overflow: hidden; isolation: isolate; }
 .svc-stage:first-of-type { border-top: 0; }
 .svc-stage-inner { display: grid; grid-template-columns: 1.1fr 1fr; gap: clamp(2rem,5vw,5rem); align-items: center; }
-@media (max-width: 920px) { .svc-stage-inner { grid-template-columns: 1fr; } }
+@media (max-width: 920px) {
+  .svc-stage-inner { grid-template-columns: 1fr; }
+  /* Orden consistente en movil: siempre primero el texto, luego la imagen (sin importar el order:-1 de escritorio) */
+  .svc-stage-inner .svc-body { order: -1 !important; }
+  .svc-stage-inner .svc-visual { order: 0 !important; }
+}
 .svc-number { font-family: var(--font-heading); font-weight: 800; font-size: clamp(4rem,10vw,8rem); line-height: 1; color: transparent; -webkit-text-stroke: 1.5px var(--color-accent); letter-spacing: -0.04em; margin-bottom: var(--space-4); }
 .svc-title { font-size: clamp(2rem,4vw,3rem); margin-bottom: var(--space-6); }
 .svc-body p { font-size: var(--text-lg); margin-bottom: var(--space-4); }
@@ -2249,12 +2254,7 @@ body.page-leaving .page-loader { opacity: 1; visibility: visible; pointer-events
 .services-grid .card .card-title,
 .services-grid .card .card-desc,
 .services-grid .card .card-link { position: relative; z-index: 2; }
-.services-grid .card .card-icon {
-  background: rgba(255,255,255,0.12);
-  color: var(--color-accent);
-  border: 1px solid rgba(255,255,255,0.2);
-  margin-bottom: var(--space-4);
-}
+.services-grid .card .card-icon { display: none; }  /* se quita: se sobreponia al titulo y el tag + titulo ya identifican el servicio */
 .services-grid .card .card-title { color: #fff; }
 .services-grid .card .card-desc { color: rgba(255,255,255,0.85); }
 .services-grid .card .card-link { color: var(--color-accent); margin-top: var(--space-5); }
