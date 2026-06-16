@@ -1,0 +1,14 @@
+# Herramientas internas (no forman parte del sitio web)
+.claude/
+.agents/
+skills-lock.json
+serve.ps1
+
+# Copia paralela antigua (no subir)
+PuntoServicios/
+
+# Temporales / sistema
+_*.txt
+Thumbs.db
+desktop.ini
+.DS_Store
